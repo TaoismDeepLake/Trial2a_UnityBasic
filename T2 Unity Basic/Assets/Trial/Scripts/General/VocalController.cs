@@ -11,8 +11,20 @@ public class VocalController : SoundController
     
     public override void Attack(float delay = 0f)
     {
+        if (speaker.isPlaying)
+            return;
+
         if (Random.Range(0, 1f) < speakingChance)
             PlayOfAGroup(attackSound);
+    }
+
+    public override void Hurt(float delay = 0f)
+    {
+        if (speaker.isPlaying)
+            return;
+
+        if (Random.Range(0, 1f) < speakingChance)
+            PlayOfAGroup(hurtSound);
     }
 
     public override void PlayOfAGroup(AudioClip[] group, float delay = 0)

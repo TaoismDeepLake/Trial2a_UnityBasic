@@ -10,19 +10,28 @@ public class MotionController : MonoBehaviour {
     [SerializeField] CharacterController cc;
     [SerializeField] SoundController sc;
     [SerializeField] VocalController vc;
+    [SerializeField] AttrController ac;
+    /// <summary>
+    /// 0 = player
+    /// </summary>
+    public int teamIndex = 0;
     public int attackTypeCount = 2;
-    public float moveSpeed;
+    public float moveSpeed = 3;
     public float atkType = 0;
     public bool attacking;
     public float attackCD = 0f;//attack cool down dynamic
 
+    public bool playerControlled = false;
 
-  
+    public Vector3 atkDirection;
 
     public float attackInterval = 1f;
 
     protected float moveX = 0, moveZ = 0;
 
+    /// <summary>
+    /// Try calling AttackAttempt to achieve cd.
+    /// </summary>
     public event Single Attack;
 
     private void Awake()
@@ -42,22 +51,34 @@ public class MotionController : MonoBehaviour {
             sc = GetComponentInChildren<SoundController>();
         }
 
-        
+        if (null == ac)
+        {
+            ac = GetComponentInChildren<AttrController>();
+        }
     }
 
     // Use this for initialization
     void Start () {
-		
+        ac.Death += Death;
+        ac.OnTakeDamge += Hurt;
+        Attack += AttackBasic;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         Upkeep();
 
-        HandleInput();
+        if (playerControlled)
+            HandleInput();
+
+        anim.SetFloat("Attacking", attackCD > 0 ? 1 : 0);
+        anim.SetFloat("Moving", moveX != 0 || moveZ != 0 ? 1 : 0);
+
         HandleMovement();
         HandleAnimation();
 
+        moveX = 0;
+        moveZ = 0;
 	}
 
     void Upkeep()
@@ -69,36 +90,55 @@ public class MotionController : MonoBehaviour {
         {
             atkType = 0;
         }
+
+        
+    }
+
+    public void MoveTowards(Vector3 direction)
+    {
+        //transform.forward = direction;
+        direction.Normalize();
+        moveX = direction.x;
+        moveZ = direction.z;
+
+        anim.SetFloat("Moving", moveX != 0 || moveZ != 0 ? 1 : 0);
     }
 
     protected void HandleInput()
     {
+
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
 
         float threshold = 0.1f;
 
-        if (Mathf.Abs(moveX) > threshold || Mathf.Abs(moveZ) > threshold)
-            return;//can not attack while moving
+        //if (Mathf.Abs(moveX) > threshold || Mathf.Abs(moveZ) > threshold)
+        //    return;//can not attack while moving
 
         if (attackCD <= 0 && false == attacking && Input.GetAxis("Fire1") > threshold)
         {
-            atkType = Random.Range(0.5f, attackTypeCount);
-            attacking = true;
-            sc.Attack(0.5f);
-            if (vc)
-                vc.Attack();
-
-            if (Attack != null)
-                Attack();
-
-            StartCoroutine(ResetAtk());
+            Attack();
         }
 
-        if (Input.GetAxis("Fire1") < threshold)
-        {
-            attacking = false;
-        }
+        Vector3 world = transform.localToWorldMatrix * new Vector3(moveX, 0, moveZ);
+
+        moveX = world.x;
+        moveZ = world.z;
+
+        atkDirection = transform.forward;
+    }
+
+    void AttackBasic()
+    {
+        atkType = Random.Range(0.5f, attackTypeCount);
+        attacking = true;
+        sc.Attack(0.5f);
+        if (vc)
+            vc.Attack();
+
+        
+
+        StartCoroutine(ResetAtk());
     }
 
     IEnumerator ResetAtk()
@@ -111,19 +151,38 @@ public class MotionController : MonoBehaviour {
 
     protected void HandleMovement()
     {
-        cc.SimpleMove(transform.localToWorldMatrix * new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed));
+        cc.SimpleMove( new Vector3(moveX * moveSpeed, 0, moveZ * moveSpeed));
     }
 
     protected void HandleAnimation()
     {
-        anim.SetFloat("SpeedX", moveX);
-        anim.SetFloat("SpeedZ", moveZ);
+        Vector3 local = transform.worldToLocalMatrix *(new Vector3(moveX, 0, moveZ));
+
+
+        anim.SetFloat("SpeedX", local.x);
+        anim.SetFloat("SpeedZ", local.z);
 
         if (attacking)
             anim.SetFloat("AttackVer", atkType);
-        else
-            anim.SetFloat("AttackVer", 0, 0.2f, Time.deltaTime);
+        
     }
 
+    public void Hurt()
+    {
+        vc.Hurt();
+    }
 
+    public void Death()
+    {
+        anim.SetBool("Dead", true);
+        vc.Death();
+        cc.enabled = false;
+        enabled = false;
+    }
+
+    public void AttackAttempt()
+    {
+        if (attackCD <= 0)
+            Attack();
+    }
 }

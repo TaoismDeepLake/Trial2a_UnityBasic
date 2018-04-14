@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Fading : MonoBehaviour {
-
+    /// <summary>
+    /// Should be a parent of this.
+    /// </summary>
+    [SerializeField] GameObject toDestroy;
+    [SerializeField] bool fadingStarted;
     /// <summary>
     /// time to live
     /// </summary>
@@ -12,11 +16,16 @@ public class Fading : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartCoroutine(Fade());
+        fadingStarted = true;
 	}
 	
 	IEnumerator Fade()
     {
         yield return new WaitForSeconds(fading);
-        Destroy(gameObject);
+        if (toDestroy)
+            Destroy(toDestroy);
+        else
+            Destroy(gameObject);
+
     }
 }

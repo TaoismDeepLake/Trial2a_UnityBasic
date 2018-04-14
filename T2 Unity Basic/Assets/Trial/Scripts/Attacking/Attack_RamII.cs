@@ -6,7 +6,7 @@ public class Attack_RamII : MonoBehaviour {
 
     [SerializeField] float initDistance = 1f;
     [SerializeField] float projectileSpeed = 3f;
-
+    [SerializeField] AttrController attr;
     [SerializeField] GameObject prefab = null;
 
 	// Use this for initialization
@@ -14,12 +14,15 @@ public class Attack_RamII : MonoBehaviour {
         if (null == prefab)
             Debug.LogError("Please assign the prefab");
 
-        GetComponent<MotionController>().Attack += Attacking;	
+        GetComponent<MotionController>().Attack += Attacking;
+        attr = GetComponent<AttrController>();
 	}
 	
     void Attacking()
     {
         GameObject g = Instantiate(prefab, transform.position + initDistance * transform.forward, Quaternion.identity);
-        g.GetComponent<PillarMoving>().speed = transform.forward * projectileSpeed;
+        PillarMoving pillar = g.GetComponent<PillarMoving>();
+        pillar.speed = transform.forward * projectileSpeed;
+        pillar.DPS = attr.atk * 1.5f;
     }
 }

@@ -6,6 +6,7 @@ public class PillarScale : MonoBehaviour {
 
     [SerializeField] float timeToLive = 1f;
     [SerializeField] float maxWidth = 1f;
+    [SerializeField] PillarMoving main;
 
     float speed;
     float curWidth = 0;
@@ -34,4 +35,17 @@ public class PillarScale : MonoBehaviour {
         transform.localScale = new Vector3(curWidth, 200, curWidth);
 
 	}
+
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log("Trigg'd");
+
+
+            if (other.tag == "Unit")
+            {
+                AttrController attr = other.GetComponent<AttrController>();
+                attr.TakeDamage(main.DPS * Time.deltaTime);
+            }
+        
+    }
 }
