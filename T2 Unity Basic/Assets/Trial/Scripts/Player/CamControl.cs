@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class CamControl : MonoBehaviour {
 
-    [SerializeField] Transform pivot;
-    [SerializeField] Transform player;
+    public Transform pivot;
+    public Transform player;
 
     [SerializeField] float zoomSensi = 100f;
     [SerializeField] float rotateSensi = 10f;
@@ -24,7 +24,20 @@ public class CamControl : MonoBehaviour {
     [SerializeField] float distance = 2f;
     [SerializeField] float distanceThreshold = 1f;
 
-    Camera cam;
+    Camera _cam;
+    Camera cam {
+        get
+        {
+            if (!_cam)
+                _cam = GetComponent<Camera>();
+
+            return _cam;
+        }
+        set
+        {
+            _cam = value;
+        }
+    }
 
     SkinnedMeshRenderer mr;
     [SerializeField] Material alternateMaterial;
@@ -36,6 +49,11 @@ public class CamControl : MonoBehaviour {
     {
         cam = GetComponent<Camera>();
 
+
+    }
+
+    private void Start()
+    {
         pitchMax *= Mathf.Deg2Rad;
         pitchMin *= Mathf.Deg2Rad;
 
@@ -44,10 +62,7 @@ public class CamControl : MonoBehaviour {
 
         LockView();
         LockView();
-    }
 
-    private void Start()
-    {
         player.GetComponent<AttrController>().Death += Death;
 
     }
@@ -76,6 +91,8 @@ public class CamControl : MonoBehaviour {
 
         transform.LookAt(pivot);
 
+        AvoidWall();
+
         if (distance < 1)
         {
             if (mr.sharedMaterial != alternateMaterial)
@@ -87,6 +104,60 @@ public class CamControl : MonoBehaviour {
                 mr.sharedMaterial = originalMaterial;
         }
 	}
+
+    Vector3 detectionRange = new Vector3(0.1f,0.1f,0.1f);
+
+
+    Vector3 dy;
+    Vector3 dx;//half the near clip plane's width
+
+    float dyf, dxf;
+    Vector3 nearOrigin;
+
+    bool CheckWall()
+    {
+        dyf = cam.nearClipPlane * Mathf.Tan(cam.fieldOfView / 2 * Mathf.Deg2Rad);
+        dxf = dyf * cam.aspect;
+        dx = transform.right * dxf;
+        dy = transform.up * dyf;
+        nearOrigin = transform.position + transform.forward * cam.nearClipPlane;
+
+        return(Physics.BoxCast(transform.position, new Vector3(dxf, dyf, 0.001f), transform.forward, transform.rotation, cam.nearClipPlane, 1<<11));
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = CheckWall() ? Color.red : Color.yellow;
+        Gizmos.DrawLine(transform.position, nearOrigin);
+        Gizmos.DrawRay(nearOrigin, dx);
+        Gizmos.DrawRay(nearOrigin, dy);
+        Gizmos.DrawRay(nearOrigin, -dx);
+        Gizmos.DrawRay(nearOrigin, -dy);
+    }
+
+    /// <summary>
+    /// Make sure you have a kinametic-rigidbody3D attached.
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerStay(Collider other)
+    {
+        //Debug.Log(other.name);
+
+        if ("Terrain" == other.tag)
+        {
+            distance -= Time.deltaTime * zoomSensi;
+            //Debug.Log("Crashed.");
+        }
+    }
+
+    void AvoidWall()
+    {
+        ////Try to keep the character in sight.
+        //while (Physics.Raycast(transform.position, pivot.position - transform.position, distance, 1 << 11) && distance > distMin)
+        //{
+        //    distance -= Time.deltaTime * zoomSensi;
+        //}
+    }
 
     void LockView()
     {
@@ -105,8 +176,6 @@ public class CamControl : MonoBehaviour {
 
     void HandleInput()
     {
-        
-
         distance += zoomSensi * Time.deltaTime * Input.GetAxis("Mouse ScrollWheel");
         distance = Mathf.Clamp(distance, distMin, distMax);
 

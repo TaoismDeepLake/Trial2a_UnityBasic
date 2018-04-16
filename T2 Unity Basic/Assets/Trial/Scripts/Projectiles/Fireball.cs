@@ -7,7 +7,7 @@ public class Fireball : MonoBehaviour {
     public Vector3 speed = Vector3.zero;
 
     public GameObject explosion;
-
+    public MotionController source;
 
     /// <summary>
     /// Damage per second on contact

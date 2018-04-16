@@ -8,6 +8,8 @@ public class PillarScale : MonoBehaviour {
     [SerializeField] float maxWidth = 1f;
     [SerializeField] PillarMoving main;
 
+    public MotionController source;
+
     float speed;
     float curWidth = 0;
 
@@ -38,7 +40,7 @@ public class PillarScale : MonoBehaviour {
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("Trigg'd");
+
 
 
             if (other.tag == "Unit")
