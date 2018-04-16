@@ -10,6 +10,9 @@ public class AttrController : MonoBehaviour {
     [SerializeField] bool startFull = true;
     [SerializeField] UGUI_Bar HPBar = null;
 
+    public bool createHealthBar = true;
+    [SerializeField] GameObject healthBarPrefab;
+    NGUI_Bar bar;
 
     public bool isAlive = true;
 
@@ -19,6 +22,8 @@ public class AttrController : MonoBehaviour {
     public float atk = 10f;
     public float regenHP = 0.1f;
     public float regenMP = 0.1f;
+
+
 
     private void Start()
     {
@@ -35,6 +40,14 @@ public class AttrController : MonoBehaviour {
         }
 
         Death += Die;
+
+        if (createHealthBar)
+        {
+            GameObject g = Instantiate(healthBarPrefab);
+            bar = g.GetComponent<NGUI_Bar>();
+            bar.targetTrans = transform;
+            bar.SetRatio(HP / maxHP);
+        }
     }
 
     // Update is called once per frame
@@ -60,6 +73,9 @@ public class AttrController : MonoBehaviour {
         MP += regenMP * Time.deltaTime;
         if (MP > maxMP)
             MP = maxMP;
+
+        if (bar)
+            bar.SetRatio(HP / maxHP);
 
         #endregion
     }

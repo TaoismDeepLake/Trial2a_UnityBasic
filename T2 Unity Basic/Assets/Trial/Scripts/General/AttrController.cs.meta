@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: d5ab22217ff5ed448acc3014b670e646
-timeCreated: 1523615141
+timeCreated: 1523875647
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - HPBar: {instanceID: 0}
+  - healthBarPrefab: {fileID: 1123574560015906, guid: f99b7637062eed04093be9bc494dae87,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
