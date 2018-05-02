@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NGUI_Bar : MonoBehaviour {
 
+    [SerializeField] bool dontDestroy = false;
+    [SerializeField] UILabel unitName = null;
     Camera cam;
 
     public Transform targetTrans;
@@ -16,6 +18,11 @@ public class NGUI_Bar : MonoBehaviour {
         cam = Camera.main;
     }
 
+    public void SetName(string _name)
+    {
+        unitName.text = _name;
+    }
+
     public void SetRatio(float ratio)
     {
         bar.fillAmount = Mathf.Clamp(ratio, 0f, 1f);
@@ -25,10 +32,12 @@ public class NGUI_Bar : MonoBehaviour {
     void Update () {
         if (null == targetTrans)
         {
-            Destroy(gameObject);
+            if (!dontDestroy)
+                Destroy(gameObject);
             return;
         }
         transform.position = targetTrans.position + floatDistance * Vector3.up;
         transform.LookAt(cam.transform);
+        transform.forward = -transform.forward;
 	}
 }

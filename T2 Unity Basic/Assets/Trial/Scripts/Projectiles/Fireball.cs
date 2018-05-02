@@ -26,6 +26,8 @@ public class Fireball : MonoBehaviour {
         {
             AttrController attr = other.GetComponent<AttrController>();
             attr.TakeDamage(damage);
+
+            NGUI_SplashText.CreateText(transform.position, damage);
         }
 
         

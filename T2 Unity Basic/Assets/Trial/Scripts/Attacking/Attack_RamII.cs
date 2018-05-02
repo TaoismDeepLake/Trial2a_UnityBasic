@@ -8,13 +8,17 @@ public class Attack_RamII : MonoBehaviour {
     [SerializeField] float projectileSpeed = 3f;
     [SerializeField] AttrController attr;
     [SerializeField] GameObject prefab = null;
+    [SerializeField] MotionController motion;
 
 	// Use this for initialization
 	void Start () {
         if (null == prefab)
             Debug.LogError("Please assign the prefab");
 
-        GetComponent<MotionController>().Attack += Attacking;
+        if (null == motion)
+            motion = GetComponent<MotionController>();
+
+        motion.Attack += Attacking;
         attr = GetComponent<AttrController>();
 	}
 	
@@ -24,5 +28,8 @@ public class Attack_RamII : MonoBehaviour {
         PillarMoving pillar = g.GetComponent<PillarMoving>();
         pillar.speed = transform.forward * projectileSpeed;
         pillar.DPS = attr.atk * 1.5f;
+
+        PillarScale ps = g.GetComponentInChildren<PillarScale>();
+        ps.source = motion;
     }
 }

@@ -38,16 +38,35 @@ public class PillarScale : MonoBehaviour {
 
 	}
 
+    readonly int textCycle = 5;
+    int textCD = 0;
+
+    private void FixedUpdate()
+    {
+        textCD++;
+        if (textCycle == textCD)
+            textCD = 0;
+    }
+
     private void OnTriggerStay(Collider other)
     {
 
+        if (other.tag == "Unit")
+        {
+            AttrController attr = other.GetComponent<AttrController>();
+            attr.TakeDamage(main.DPS * Time.deltaTime);
 
-
-            if (other.tag == "Unit")
+            AIController ai = other.GetComponent<AIController>();
+            if (ai)
             {
-                AttrController attr = other.GetComponent<AttrController>();
-                attr.TakeDamage(main.DPS * Time.deltaTime);
+                ai.targetList.Add(source);
             }
+
+            if (0 == textCD)
+            {
+                NGUI_SplashText.CreateText(other.transform.position + 0.5f * Vector3.up, main.DPS * (Time.deltaTime * textCycle));
+            }
+        }
         
     }
 }

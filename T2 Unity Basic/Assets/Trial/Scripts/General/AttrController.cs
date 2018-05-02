@@ -8,11 +8,13 @@ public class AttrController : MonoBehaviour {
     public event Single OnTakeDamge;
 
     [SerializeField] bool startFull = true;
-    [SerializeField] UGUI_Bar HPBar = null;
+    //public UGUI_Bar HPBar = null;
+
+    public string unitName;
 
     public bool createHealthBar = true;
     [SerializeField] GameObject healthBarPrefab;
-    NGUI_Bar bar;
+    public NGUI_Bar bar;
 
     public bool isAlive = true;
 
@@ -33,11 +35,13 @@ public class AttrController : MonoBehaviour {
             MP = maxMP;
         }
 
-        if (HPBar)
-        {
-            HPBar.maxVal = maxHP;
-            HPBar.SetVal(HP);
-        }
+        //if (HPBar)
+        //{
+        //    HPBar.maxVal = maxHP;
+        //    HPBar.SetVal(HP);
+        //}
+
+
 
         Death += Die;
 
@@ -46,6 +50,12 @@ public class AttrController : MonoBehaviour {
             GameObject g = Instantiate(healthBarPrefab);
             bar = g.GetComponent<NGUI_Bar>();
             bar.targetTrans = transform;
+            bar.SetRatio(HP / maxHP);
+        }
+
+        if (bar)
+        {
+            bar.SetName(unitName);
             bar.SetRatio(HP / maxHP);
         }
     }
@@ -67,8 +77,8 @@ public class AttrController : MonoBehaviour {
         if (HP > maxHP)
             HP = maxHP;
 
-        if (HPBar)
-            HPBar.SetVal(HP);
+        //if (HPBar)
+        //    HPBar.SetVal(HP);
 
         MP += regenMP * Time.deltaTime;
         if (MP > maxMP)
@@ -83,13 +93,16 @@ public class AttrController : MonoBehaviour {
     void Die()
     {
         isAlive = false;
+        //HPBar.gameObject.SetActive(false);
+        if (bar)
+            bar.gameObject.SetActive(false);
     }
 
     public void TakeDamage(float dmg, MotionController src = null)
     {
         HP -= dmg;
-        if (HPBar)
-            HPBar.SetVal(HP);
+        if (bar)
+            bar.SetRatio(HP/maxHP);
 
         if (OnTakeDamge != null)
             OnTakeDamge();
