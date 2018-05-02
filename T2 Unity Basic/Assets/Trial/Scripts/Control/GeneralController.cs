@@ -8,6 +8,8 @@ public class GeneralController : MonoBehaviour {
 
     public GameObject splashTextPrefab;
 
+    public bool useFG = false;
+
     private void Awake()
     {
         instance = this;

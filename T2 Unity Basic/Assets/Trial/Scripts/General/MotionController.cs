@@ -106,6 +106,17 @@ public class MotionController : MonoBehaviour {
 
     protected void HandleInput()
     {
+        float fire;
+
+
+        if (GeneralController.instance.useFG)
+        {
+            fire = Input.GetAxis("Fire2");
+        }
+        else
+        {
+            fire = Input.GetAxis("Fire1");
+        }
 
         moveX = Input.GetAxis("Horizontal");
         moveZ = Input.GetAxis("Vertical");
@@ -115,7 +126,7 @@ public class MotionController : MonoBehaviour {
         //if (Mathf.Abs(moveX) > threshold || Mathf.Abs(moveZ) > threshold)
         //    return;//can not attack while moving
 
-        if (attackCD <= 0 && false == attacking && Input.GetAxis("Fire1") > threshold)
+        if (attackCD <= 0 && false == attacking && fire > threshold)
         {
             Attack();
         }
@@ -135,8 +146,6 @@ public class MotionController : MonoBehaviour {
         sc.Attack(0.5f);
         if (vc)
             vc.Attack();
-
-        
 
         StartCoroutine(ResetAtk());
     }
