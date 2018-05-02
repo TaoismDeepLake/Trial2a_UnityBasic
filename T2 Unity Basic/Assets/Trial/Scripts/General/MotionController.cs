@@ -109,7 +109,7 @@ public class MotionController : MonoBehaviour {
         float fire;
 
 
-        if (GeneralController.instance.useFG)
+        if (GeneralController.instance.useEasyTouch)
         {
             fire = Input.GetAxis("Fire2");
         }

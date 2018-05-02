@@ -13,14 +13,14 @@ public class PlayerSpawn : MonoBehaviour {
     [SerializeField] NGUI_Bar playerBar;
 
 
-    [SerializeField] CamControlFG camAssist;
+    [SerializeField] CamControlEZ camAssist;
 
     public GameObject CreatePlayer()
     {
         GameObject g = Instantiate(playerPrefab, transform.position, Quaternion.identity);
-        if (GeneralController.instance.useFG)
+        if (GeneralController.instance.useEasyTouch)
         {
-            //orbit.target = GameObject.Find("Pivot").transform;
+            PlayerEasyToucher.instance.InitEasyTouch(g);
             camAssist.pivot = GameObject.Find("Pivot").transform;
             camAssist.player = g.transform;
         }
@@ -45,7 +45,7 @@ public class PlayerSpawn : MonoBehaviour {
 
         if (null == camAssist)
         {
-            camAssist = FindObjectOfType<CamControlFG>();
+            camAssist = FindObjectOfType<CamControlEZ>();
         }
 
     }

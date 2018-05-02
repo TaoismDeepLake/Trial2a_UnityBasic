@@ -8,7 +8,7 @@ public class GeneralController : MonoBehaviour {
 
     public GameObject splashTextPrefab;
 
-    public bool useFG = false;
+    public bool useEasyTouch = false;
 
     private void Awake()
     {
