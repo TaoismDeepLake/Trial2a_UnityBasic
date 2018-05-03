@@ -7,13 +7,14 @@ public class GUIEasyButtonInspector : Editor {
 
 	GUIStyle paddingStyle1;
 
-	public GUIEasyButtonInspector(){
+    public GUIEasyButtonInspector()
+    {
 
-		paddingStyle1 = new GUIStyle();
-		paddingStyle1.padding = new RectOffset(15,0,0,0);
-	}
+        paddingStyle1 = new GUIStyle();
+        //paddingStyle1.padding = new RectOffset(15, 0, 0, 0);
+    }
 
-	void OnEnable(){
+    void OnEnable(){
 			
 		EasyButton t = (EasyButton)target;
 		if (t.NormalTexture==null){

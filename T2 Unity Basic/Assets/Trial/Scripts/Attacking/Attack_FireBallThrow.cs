@@ -29,6 +29,7 @@ public class Attack_FireBallThrow : MonoBehaviour {
     {
         GameObject g = Instantiate(prefab, transform.position + initDistance * transform.forward + initDistance * transform.up, Quaternion.identity);
         Fireball projectile = g.GetComponent<Fireball>();
+        projectile.source = mc;
         projectile.speed = mc.atkDirection * projectileSpeed;
         projectile.damage = attr.atk;
         g.GetComponent<Fading>().fading = projectileRange / projectileSpeed;

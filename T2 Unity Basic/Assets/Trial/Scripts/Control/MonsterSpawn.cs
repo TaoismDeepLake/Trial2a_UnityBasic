@@ -44,7 +44,7 @@ public class MonsterSpawn : MonoBehaviour {
 
         Vector3 pos = transform.position + new Vector3(spawnR * Mathf.Cos(spawnTheta), 0, spawnR * Mathf.Sin(spawnTheta));
 
-        GameObject g = GameObject.Instantiate(prefabToSpawn, pos, Quaternion.identity);
+        GameObject g = Instantiate(prefabToSpawn, pos, Quaternion.identity);
 
         spawnList.Add(g);
 

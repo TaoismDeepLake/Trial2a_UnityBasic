@@ -72,7 +72,22 @@ public class CamControlEZ : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        transform.position = pivot.position - distance * pivot.forward;
+
         transform.LookAt(pivot);
+
+        if (!pivot || lockView)
+            return;
+
+        //HandleInput();
+
+        //player.Rotate(new Vector3(0, -rotateSensi * Time.deltaTime * Input.GetAxis("Mouse X") * Mathf.Rad2Deg, 0));
+
+        //transform.position = new Vector3(distance * Mathf.Cos(pitch) * Mathf.Cos(yaw),
+        //    distance * Mathf.Sin(pitch),
+        //    distance * Mathf.Cos(pitch) * Mathf.Sin(yaw)) + pivot.position;
+
+
 
         if (distance < 1)
         {

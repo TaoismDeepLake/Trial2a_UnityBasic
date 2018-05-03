@@ -24,6 +24,9 @@ public class CamControl : MonoBehaviour {
     [SerializeField] float distance = 2f;
     [SerializeField] float distanceThreshold = 1f;
 
+    [SerializeField] EasyJoystick joystick;
+
+
     Camera _cam;
     Camera cam {
         get
@@ -56,15 +59,14 @@ public class CamControl : MonoBehaviour {
     {
         pitchMax *= Mathf.Deg2Rad;
         pitchMin *= Mathf.Deg2Rad;
+    }
 
+
+    public void Init()
+    {
         mr = player.GetComponentInChildren<SkinnedMeshRenderer>();
         originalMaterial = mr.sharedMaterial;
-
-        LockView();
-        LockView();
-
         player.GetComponent<AttrController>().Death += Death;
-
     }
 
     private void Death()
@@ -72,22 +74,27 @@ public class CamControl : MonoBehaviour {
         pivot = null;
     }
 
+    public void ResetRotation()
+    {
+        yaw = -Mathf.PI/2;
+        pitch = 0;
+    }
+
     // Update is called once per frame
     void Update () {
 
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-            LockView();
-
-        if (!pivot || lockView)
+        if (!pivot )
             return;
 
         HandleInput();
 
-        player.Rotate(new Vector3(0, - rotateSensi * Time.deltaTime * Input.GetAxis("Mouse X") * Mathf.Rad2Deg, 0));
+        player.Rotate(new Vector3(0, - rotateSensi * Time.deltaTime * joystick.JoystickValue.x * Mathf.Rad2Deg, 0));
 
-        transform.position = new Vector3(distance * Mathf.Cos(pitch) * Mathf.Cos(yaw),
+        float yaw1 = yaw - player.rotation.eulerAngles.y * Mathf.Deg2Rad;
+
+        transform.position = new Vector3(distance * Mathf.Cos(pitch) * Mathf.Cos(yaw1),
             distance * Mathf.Sin(pitch),
-            distance * Mathf.Cos(pitch) * Mathf.Sin(yaw)) + pivot.position;
+            distance * Mathf.Cos(pitch) * Mathf.Sin(yaw1)) + pivot.position;
 
         transform.LookAt(pivot);
 
@@ -145,7 +152,7 @@ public class CamControl : MonoBehaviour {
 
         if ("Terrain" == other.tag)
         {
-            distance -= Time.deltaTime * zoomSensi;
+            distance -= Time.deltaTime * 10 * zoomSensi;
             //Debug.Log("Crashed.");
         }
     }
@@ -159,29 +166,71 @@ public class CamControl : MonoBehaviour {
         //}
     }
 
-    void LockView()
-    {
-        lockView = !lockView;
-        if (lockView)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
-
     void HandleInput()
     {
         distance += zoomSensi * Time.deltaTime * Input.GetAxis("Mouse ScrollWheel");
         distance = Mathf.Clamp(distance, distMin, distMax);
 
-        yaw += rotateSensi * Time.deltaTime * Input.GetAxis("Mouse X");
+        yaw += rotateSensi * Time.deltaTime * joystick.JoystickValue.x;
 
-        pitch += rotateSensi * Time.deltaTime * Input.GetAxis("Mouse Y");
+        pitch += rotateSensi * Time.deltaTime * joystick.JoystickValue.y;
         pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
     }
+
+
+
+
+
+    // Subscribe to events
+    void OnEnable()
+    {
+        
+        EasyTouch.On_PinchIn += ZoomIn;
+        EasyTouch.On_PinchOut += ZoomOut;
+
+    }
+
+    void OnDisable()
+    {
+        UnsubscribeEvent();
+    }
+
+    void OnDestroy()
+    {
+        UnsubscribeEvent();
+    }
+
+    // Unsubscribe to events
+    void UnsubscribeEvent()
+    {
+        EasyTouch.On_PinchIn -= ZoomIn;
+        EasyTouch.On_PinchOut -= ZoomOut;
+    }
+
+    void ZoomIn(Gesture gesture)
+    {
+        // Verification that the action on the object
+        //if (gesture.pickObject.layer != 12)
+        {
+
+            float zoom = Time.deltaTime * gesture.deltaPinch;
+
+            distance += zoomSensi * zoom;
+
+        }
+    }
+
+    void ZoomOut(Gesture gesture)
+    {
+        // Verification that the action on the object
+        //if (gesture.pickObject.layer != 12)
+        {
+
+            float zoom = Time.deltaTime * gesture.deltaPinch;
+
+            distance -= zoomSensi * zoom;
+
+        }
+    }
+
 }

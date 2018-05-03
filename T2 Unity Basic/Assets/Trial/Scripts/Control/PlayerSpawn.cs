@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour {
 
-    /// <summary>
-    /// Uses the finger gesture plugin?
-    /// </summary>
+
 
     [SerializeField] CamControl cam;
     [SerializeField] GameObject playerPrefab;
@@ -21,8 +19,12 @@ public class PlayerSpawn : MonoBehaviour {
         if (GeneralController.instance.useEasyTouch)
         {
             PlayerEasyToucher.instance.InitEasyTouch(g);
-            camAssist.pivot = GameObject.Find("Pivot").transform;
-            camAssist.player = g.transform;
+            //camAssist.pivot = GameObject.Find("Pivot").transform;
+            //camAssist.player = g.transform;
+
+            cam.pivot = GameObject.Find("Pivot").transform;
+            cam.player = g.transform;
+            cam.Init();
         }
         else
         {

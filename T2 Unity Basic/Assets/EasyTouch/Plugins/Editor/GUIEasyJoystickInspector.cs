@@ -8,13 +8,14 @@ public class GUIEasyJoystickInspector : Editor{
 	
 	GUIStyle paddingStyle1;
 
-	//public GUIEasyJoystickInspector(){
+    public GUIEasyJoystickInspector()
+    {
 
-	//	paddingStyle1 = new GUIStyle();
-	//	paddingStyle1.padding = new RectOffset(15,0,0,0);
-	//}
-	
-	void OnEnable(){
+        paddingStyle1 = new GUIStyle();
+        //paddingStyle1.padding = new RectOffset(15, 0, 0, 0);
+    }
+
+    void OnEnable(){
 			
 		EasyJoystick t = (EasyJoystick)target;
 		if (t.areaTexture==null){

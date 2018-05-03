@@ -11,6 +11,8 @@ public class MotionController : MonoBehaviour {
     [SerializeField] SoundController sc;
     [SerializeField] VocalController vc;
     [SerializeField] AttrController ac;
+
+    EasyJoystick sz;
     /// <summary>
     /// 0 = player
     /// </summary>
@@ -64,6 +66,12 @@ public class MotionController : MonoBehaviour {
         Attack += AttackBasic;
 	}
 	
+    public void SetEZControl(EasyJoystick joystick)
+    {
+        sz = joystick;
+        playerControlled = true;
+    }
+
 	// Update is called once per frame
 	void Update () {
         Upkeep();
@@ -118,8 +126,14 @@ public class MotionController : MonoBehaviour {
             fire = Input.GetAxis("Fire1");
         }
 
-        moveX = Input.GetAxis("Horizontal");
-        moveZ = Input.GetAxis("Vertical");
+        
+
+        moveX = sz.JoystickValue.x / sz.speed.x;
+        moveZ = sz.JoystickValue.y;
+        //moveX = Input.GetAxis("Horizontal");
+        //moveZ = Input.GetAxis("Vertical");
+
+
 
         float threshold = 0.1f;
 

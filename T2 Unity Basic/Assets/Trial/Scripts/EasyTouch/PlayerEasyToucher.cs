@@ -17,7 +17,8 @@ public class PlayerEasyToucher : MonoBehaviour {
     public void InitEasyTouch(GameObject player)
     {
         fireButton.receiverGameObject = player;
-        moveJoystick.YAxisTransform = transform;
-        moveJoystick.XAxisTransform = transform;
+        moveJoystick.YAxisTransform = player.transform;
+        moveJoystick.XAxisTransform = player.transform;
+        player.GetComponent<MotionController>().SetEZControl(moveJoystick);
     }
 }

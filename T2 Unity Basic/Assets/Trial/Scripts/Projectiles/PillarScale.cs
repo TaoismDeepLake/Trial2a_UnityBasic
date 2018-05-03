@@ -7,15 +7,17 @@ public class PillarScale : MonoBehaviour {
     [SerializeField] float timeToLive = 1f;
     [SerializeField] float maxWidth = 1f;
     [SerializeField] PillarMoving main;
-
+    [SerializeField] Light lamp;
     public MotionController source;
 
     float speed;
     float curWidth = 0;
+    [SerializeField]float maxIntensity = 15f;
 
 	// Use this for initialization
 	void Start () {
         speed = maxWidth / timeToLive;
+        
 	}
 	
 	// Update is called once per frame
@@ -33,7 +35,7 @@ public class PillarScale : MonoBehaviour {
             curWidth = maxWidth;
             speed = -speed;
         }
-
+        lamp.intensity = maxIntensity * curWidth / maxWidth;
         transform.localScale = new Vector3(curWidth, 200, curWidth);
 
 	}
