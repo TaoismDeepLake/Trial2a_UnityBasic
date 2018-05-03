@@ -53,6 +53,23 @@ public class MonsterSpawn : MonoBehaviour {
     public void CheckList()
     {
         //remove destroyed objects
+
+        for(int i = 0; i < spawnList.Count; i++)
+        {
+            if (spawnList[i] == null)
+            {
+                spawnList.RemoveAt(i);
+            }
+            else
+            {
+                AttrController attr = spawnList[i].GetComponent<AttrController>();
+                if (attr && !attr.isAlive)
+                {
+                    Destroy(spawnList[i]);
+                    spawnList.RemoveAt(i);
+                }
+            }
+        }
     }
 
     public void SpawnAttempt()
@@ -60,13 +77,15 @@ public class MonsterSpawn : MonoBehaviour {
         if (!activated)
             return;
 
+        CheckList();
+
         if (spawnList.Count >= maxCount)
             return;
 
         float r = Random.Range(0, 1f);
         if (r < spawnChance)
         {
-            CheckList();
+           
             Spawn();
         }
     }

@@ -8,6 +8,7 @@ public class AttrController : MonoBehaviour {
     public event Single OnTakeDamge;
 
     [SerializeField] bool startFull = true;
+    [SerializeField] bool destroyOnDeath = false;
     //public UGUI_Bar HPBar = null;
 
     public string unitName;
@@ -96,6 +97,9 @@ public class AttrController : MonoBehaviour {
         //HPBar.gameObject.SetActive(false);
         if (bar)
             bar.gameObject.SetActive(false);
+
+        if (destroyOnDeath)
+            Destroy(gameObject);
     }
 
     public void TakeDamage(float dmg, MotionController src = null)

@@ -19,13 +19,13 @@ public class PillarMoving : MonoBehaviour {
 
     
 
-    private void OnTriggerStay(Collider other)
-    {
+    //private void OnTriggerStay(Collider other)
+    //{
 
-        if (other.tag == "Unit")
-        {
-            AttrController attr = other.GetComponent<AttrController>();
-            attr.TakeDamage(DPS * Time.deltaTime);
-        }
-    }
+    //    if (other.tag == "Unit")
+    //    {
+    //        AttrController attr = other.GetComponent<AttrController>();
+    //        attr.TakeDamage(DPS * Time.deltaTime);
+    //    }
+    //}
 }

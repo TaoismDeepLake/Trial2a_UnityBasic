@@ -19,12 +19,24 @@ public class Fireball : MonoBehaviour {
         transform.forward = speed;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.name);
 
         if (other.tag == "Unit")
         {
             AttrController attr = other.GetComponent<AttrController>();
+            if (!attr.isAlive)
+                return;
+
+            MotionController mc = other.GetComponent<MotionController>();
+            if (mc)
+            {
+                if (source && mc.teamIndex == source.teamIndex)
+                    return;
+            }
+
+
             attr.TakeDamage(damage);
 
             NGUI_SplashText.CreateText(transform.position, damage);

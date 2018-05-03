@@ -10,7 +10,7 @@ public class MotionController : MonoBehaviour {
     [SerializeField] CharacterController cc;
     [SerializeField] SoundController sc;
     [SerializeField] VocalController vc;
-    [SerializeField] AttrController ac;
+    public AttrController ac;
 
     EasyJoystick sz;
     /// <summary>
@@ -112,10 +112,17 @@ public class MotionController : MonoBehaviour {
         anim.SetFloat("Moving", moveX != 0 || moveZ != 0 ? 1 : 0);
     }
 
+    public bool needReset = false;
+
     protected void HandleInput()
     {
         float fire;
 
+        if (needReset)
+        {
+            transform.forward = Vector3.ProjectOnPlane(CamControl.instance.transform.forward, Vector3.up);
+            needReset = false;
+        }
 
         if (GeneralController.instance.useEasyTouch)
         {

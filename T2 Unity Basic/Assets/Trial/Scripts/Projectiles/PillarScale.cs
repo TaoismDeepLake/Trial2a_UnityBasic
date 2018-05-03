@@ -56,6 +56,9 @@ public class PillarScale : MonoBehaviour {
         if (other.tag == "Unit")
         {
             AttrController attr = other.GetComponent<AttrController>();
+            if (!attr.isAlive)
+                return;
+
             attr.TakeDamage(main.DPS * Time.deltaTime);
 
             AIController ai = other.GetComponent<AIController>();
