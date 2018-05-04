@@ -88,12 +88,13 @@ public class CamControl : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void LateUpdate () {
 
         if (!pivot )
             return;
 
-        HandleInput();
+        if (GeneralController.playerMC.playerControlled)
+            HandleInput();
 
         player.Rotate(new Vector3(0, - rotateSensi * Time.deltaTime * joystick.JoystickValue.x * Mathf.Rad2Deg, 0));
 
@@ -207,14 +208,17 @@ public class CamControl : MonoBehaviour {
 
     void BeginTouch(Gesture gesture)
     {
-        freeSwipe = !gesture.isHoverReservedArea;
-        yaw = -Mathf.PI/2;
-        pitch = 0;
+        if (GeneralController.playerMC.playerControlled)
+        {
+            freeSwipe = !gesture.isHoverReservedArea;
+            yaw = -Mathf.PI / 2;
+            pitch = 0;
+        }
     }
 
     void EndTouch(Gesture gesture)
     {
-        if (freeSwipe)
+        if (freeSwipe && GeneralController.playerMC.playerControlled)
         {
             mc.needReset = true;
             player.forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
@@ -226,9 +230,9 @@ public class CamControl : MonoBehaviour {
     void Moving(Gesture gesture)
     {
 
-        Debug.Log(gesture.pickObject);
+        //Debug.Log(gesture.pickObject);
 
-        if (freeSwipe)
+        if (freeSwipe && GeneralController.playerMC.playerControlled)
         {
             yaw += rotateSensi * Time.deltaTime * gesture.deltaPosition.x;
 
@@ -239,7 +243,7 @@ public class CamControl : MonoBehaviour {
 
     void ZoomIn(Gesture gesture)
     {
-        if (freeSwipe)
+        if (freeSwipe && GeneralController.playerMC.playerControlled)
         {
             float zoom = Time.deltaTime * gesture.deltaPinch;
 
@@ -249,7 +253,7 @@ public class CamControl : MonoBehaviour {
 
     void ZoomOut(Gesture gesture)
     {
-        if (freeSwipe)
+        if (freeSwipe && GeneralController.playerMC.playerControlled)
         {
 
             float zoom = Time.deltaTime * gesture.deltaPinch;

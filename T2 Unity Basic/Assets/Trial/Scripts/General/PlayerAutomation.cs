@@ -38,7 +38,7 @@ public class PlayerAutomation : MonoBehaviour {
         if (null == cc)
             cc = GetComponent<CharacterController>();
 
-        GetComponent<AttrController>().Death += StopAI;
+        
     }
 
 
@@ -92,9 +92,23 @@ public class PlayerAutomation : MonoBehaviour {
         }
     }
 
+    public void CheckStopAI()
+    {
+        CheckTarget();
+        Debug.Log("target = " + target);
+        if (!target)
+            StopAI();
+    }
+
     public void StopAI()
     {
         enabled = false;
+        mc.playerControlled = true;
+    }
+
+    public void OnEnable()
+    {
+        mc.playerControlled = false;
     }
 
 
@@ -104,7 +118,7 @@ public class PlayerAutomation : MonoBehaviour {
         {
             Transform t = target.transform;
             if (Vector3.Distance(t.position, transform.position) > forgiveDistance ||
-                false == target.enabled || target.teamIndex == teamIndex)
+                false == target.enabled || target.teamIndex == teamIndex || !target.ac.isAlive)
             {
                 targetList.Remove(target);
             }

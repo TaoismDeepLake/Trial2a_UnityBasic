@@ -4,33 +4,28 @@ using UnityEngine;
 
 public class PlayerSpawn : MonoBehaviour {
 
-
-
     [SerializeField] CamControl cam;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] NGUI_Bar playerBar;
 
 
-    [SerializeField] CamControlEZ camAssist;
+    //[SerializeField] CamControlEZ camAssist;
 
     public GameObject CreatePlayer()
     {
         GameObject g = Instantiate(playerPrefab, transform.position, Quaternion.identity);
-        if (GeneralController.instance.useEasyTouch)
-        {
-            PlayerEasyToucher.instance.InitEasyTouch(g);
-            //camAssist.pivot = GameObject.Find("Pivot").transform;
-            //camAssist.player = g.transform;
 
-            cam.pivot = GameObject.Find("Pivot").transform;
-            cam.player = g.transform;
-            cam.Init();
-        }
-        else
-        {
-            cam.pivot = GameObject.Find("Pivot").transform;
-            cam.player = g.transform;
-        }
+        PlayerEasyToucher.instance.InitEasyTouch(g);
+        //camAssist.pivot = GameObject.Find("Pivot").transform;
+        //camAssist.player = g.transform;
+
+        cam.pivot = GameObject.Find("Pivot").transform;
+        cam.player = g.transform;
+        cam.Init();
+
+        GeneralController.playerMC =  g.GetComponent<MotionController>();
+
+
 
         AttrController playerAttr = g.GetComponent<AttrController>();
         playerAttr.bar = playerBar;
@@ -45,10 +40,10 @@ public class PlayerSpawn : MonoBehaviour {
             cam = FindObjectOfType<CamControl>();
         }
 
-        if (null == camAssist)
-        {
-            camAssist = FindObjectOfType<CamControlEZ>();
-        }
+        //if (null == camAssist)
+        //{
+        //    camAssist = FindObjectOfType<CamControlEZ>();
+        //}
 
     }
 

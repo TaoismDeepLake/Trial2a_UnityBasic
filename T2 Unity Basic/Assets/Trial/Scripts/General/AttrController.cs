@@ -12,12 +12,31 @@ public class AttrController : MonoBehaviour {
     //public UGUI_Bar HPBar = null;
 
     public string unitName;
+    public Texture icon;
 
     public bool createHealthBar = true;
     [SerializeField] GameObject healthBarPrefab;
     public NGUI_Bar bar;
 
-    public bool isAlive = true;
+    public bool isAlive
+    {
+        get
+        {
+            if (internalAlive)
+            {
+                if (HP <= 0)
+                    Death();
+                //internalAlive = HP > 0;
+            }
+            return internalAlive;
+        }
+        set
+        {
+            internalAlive = value;
+        }
+    }
+
+    [SerializeField] bool internalAlive = true;
 
     public float maxHP = 100f, HP;
     public float maxMP = 100f, MP;
@@ -93,6 +112,7 @@ public class AttrController : MonoBehaviour {
 
     void Die()
     {
+        Debug.Log(unitName + " Died");
         isAlive = false;
         //HPBar.gameObject.SetActive(false);
         if (bar)

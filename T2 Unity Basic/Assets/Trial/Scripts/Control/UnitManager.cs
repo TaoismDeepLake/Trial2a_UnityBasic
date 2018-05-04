@@ -13,7 +13,6 @@ public class UnitManager : MonoBehaviour {
         instance = this;
     }
 
-
     void CheckList()
     {
         for(int i = 0; i < units.Count; i++)

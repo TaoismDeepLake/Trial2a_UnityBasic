@@ -1,130 +1,130 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-/// <summary>
-/// Put this onto a camera
-/// </summary>
-public class CamControlEZ : MonoBehaviour {
+///// <summary>
+///// Put this onto a camera
+///// </summary>
+//public class CamControlEZ : MonoBehaviour {
 
-    public Transform pivot;
-    public Transform player;
+//    public Transform pivot;
+//    public Transform player;
 
-    [SerializeField] float zoomSensi = 100f;
-    [SerializeField] float rotateSensi = 10f;
+//    [SerializeField] float zoomSensi = 100f;
+//    [SerializeField] float rotateSensi = 10f;
 
-    [SerializeField] float yaw = - Mathf.PI/2;//radians
+//    [SerializeField] float yaw = - Mathf.PI/2;//radians
 
-    [SerializeField] float pitchMax = 85f;
-    [SerializeField] float pitchMin = -5f;
-    [SerializeField] float pitch = 25f;
+//    [SerializeField] float pitchMax = 85f;
+//    [SerializeField] float pitchMin = -5f;
+//    [SerializeField] float pitch = 25f;
 
-    [SerializeField] float distMax = 5f;
-    [SerializeField] float distMin = 0.3f;
-    [SerializeField] float distance = 2f;
-    [SerializeField] float distanceThreshold = 1f;
+//    [SerializeField] float distMax = 5f;
+//    [SerializeField] float distMin = 0.3f;
+//    [SerializeField] float distance = 2f;
+//    [SerializeField] float distanceThreshold = 1f;
 
-    Camera _cam;
-    Camera cam {
-        get
-        {
-            if (!_cam)
-                _cam = GetComponent<Camera>();
+//    Camera _cam;
+//    Camera cam {
+//        get
+//        {
+//            if (!_cam)
+//                _cam = GetComponent<Camera>();
 
-            return _cam;
-        }
-        set
-        {
-            _cam = value;
-        }
-    }
+//            return _cam;
+//        }
+//        set
+//        {
+//            _cam = value;
+//        }
+//    }
 
-    SkinnedMeshRenderer mr;
-    [SerializeField] Material alternateMaterial;
-    Material originalMaterial;
+//    SkinnedMeshRenderer mr;
+//    [SerializeField] Material alternateMaterial;
+//    Material originalMaterial;
 
-    bool lockView = false;
+//    bool lockView = false;
 
-    void Awake()
-    {
-        cam = GetComponent<Camera>();
-
-
-    }
-
-    private void Start()
-    {
-        pitchMax *= Mathf.Deg2Rad;
-        pitchMin *= Mathf.Deg2Rad;
-
-        mr = player.GetComponentInChildren<SkinnedMeshRenderer>();
-        originalMaterial = mr.sharedMaterial;
-
-        player.GetComponent<AttrController>().Death += Death;
-
-    }
-
-    private void Death()
-    {
-        pivot = null;
-    }
-
-    // Update is called once per frame
-    void Update () {
-
-        transform.position = pivot.position - distance * pivot.forward;
-
-        transform.LookAt(pivot);
-
-        if (!pivot || lockView)
-            return;
-
-        //HandleInput();
-
-        //player.Rotate(new Vector3(0, -rotateSensi * Time.deltaTime * Input.GetAxis("Mouse X") * Mathf.Rad2Deg, 0));
-
-        //transform.position = new Vector3(distance * Mathf.Cos(pitch) * Mathf.Cos(yaw),
-        //    distance * Mathf.Sin(pitch),
-        //    distance * Mathf.Cos(pitch) * Mathf.Sin(yaw)) + pivot.position;
+//    void Awake()
+//    {
+//        cam = GetComponent<Camera>();
 
 
+//    }
 
-        if (distance < 1)
-        {
-            if (mr.sharedMaterial != alternateMaterial)
-                mr.sharedMaterial = alternateMaterial;
-        }
-        else
-        {
-            if (mr.sharedMaterial != originalMaterial)
-                mr.sharedMaterial = originalMaterial;
-        }
-	}
+//    private void Start()
+//    {
+//        pitchMax *= Mathf.Deg2Rad;
+//        pitchMin *= Mathf.Deg2Rad;
 
-    Vector3 detectionRange = new Vector3(0.1f,0.1f,0.1f);
+//        mr = player.GetComponentInChildren<SkinnedMeshRenderer>();
+//        originalMaterial = mr.sharedMaterial;
 
+//        player.GetComponent<AttrController>().Death += Death;
 
-    Vector3 dy;
-    Vector3 dx;//half the near clip plane's width
+//    }
 
-    float dyf, dxf;
-    Vector3 nearOrigin;
+//    private void Death()
+//    {
+//        pivot = null;
+//    }
 
+//    // Update is called once per frame
+//    void Update () {
 
-    /// <summary>
-    /// Make sure you have a kinametic-rigidbody3D attached.
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerStay(Collider other)
-    {
-        //Debug.Log(other.name);
+//        transform.position = pivot.position - distance * pivot.forward;
 
-        if ("Terrain" == other.tag)
-        {
-            distance -= Time.deltaTime * zoomSensi;
-            //Debug.Log("Crashed.");
-        }
-    }
+//        transform.LookAt(pivot);
+
+//        if (!pivot || lockView)
+//            return;
+
+//        //HandleInput();
+
+//        //player.Rotate(new Vector3(0, -rotateSensi * Time.deltaTime * Input.GetAxis("Mouse X") * Mathf.Rad2Deg, 0));
+
+//        //transform.position = new Vector3(distance * Mathf.Cos(pitch) * Mathf.Cos(yaw),
+//        //    distance * Mathf.Sin(pitch),
+//        //    distance * Mathf.Cos(pitch) * Mathf.Sin(yaw)) + pivot.position;
 
 
-}
+
+//        if (distance < 1)
+//        {
+//            if (mr.sharedMaterial != alternateMaterial)
+//                mr.sharedMaterial = alternateMaterial;
+//        }
+//        else
+//        {
+//            if (mr.sharedMaterial != originalMaterial)
+//                mr.sharedMaterial = originalMaterial;
+//        }
+//	}
+
+//    Vector3 detectionRange = new Vector3(0.1f,0.1f,0.1f);
+
+
+//    Vector3 dy;
+//    Vector3 dx;//half the near clip plane's width
+
+//    float dyf, dxf;
+//    Vector3 nearOrigin;
+
+
+//    /// <summary>
+//    /// Make sure you have a kinametic-rigidbody3D attached.
+//    /// </summary>
+//    /// <param name="other"></param>
+//    private void OnTriggerStay(Collider other)
+//    {
+//        //Debug.Log(other.name);
+
+//        if ("Terrain" == other.tag)
+//        {
+//            distance -= Time.deltaTime * zoomSensi;
+//            //Debug.Log("Crashed.");
+//        }
+//    }
+
+
+//}

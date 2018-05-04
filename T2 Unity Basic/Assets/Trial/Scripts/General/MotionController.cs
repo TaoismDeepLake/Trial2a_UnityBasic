@@ -64,6 +64,11 @@ public class MotionController : MonoBehaviour {
         ac.Death += Death;
         ac.OnTakeDamge += Hurt;
         Attack += AttackBasic;
+
+        if (teamIndex != 0)
+        {
+            AutoAttackList.instance.CreateItem(this);
+        }
 	}
 	
     public void SetEZControl(EasyJoystick joystick)
@@ -114,6 +119,8 @@ public class MotionController : MonoBehaviour {
 
     public bool needReset = false;
 
+    [SerializeField] float TurnSpeed = 1f;
+
     protected void HandleInput()
     {
         float fire;
@@ -133,14 +140,12 @@ public class MotionController : MonoBehaviour {
             fire = Input.GetAxis("Fire1");
         }
 
-        
-
         moveX = sz.JoystickValue.x / sz.speed.x;
         moveZ = sz.JoystickValue.y;
+
+        transform.Rotate(0,TurnSpeed * sz.JoystickValue.x, 0);
         //moveX = Input.GetAxis("Horizontal");
         //moveZ = Input.GetAxis("Vertical");
-
-
 
         float threshold = 0.1f;
 
