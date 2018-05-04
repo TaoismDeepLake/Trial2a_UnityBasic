@@ -61,7 +61,7 @@ public class PillarScale : MonoBehaviour {
 
             attr.TakeDamage(main.DPS * Time.deltaTime);
 
-            AIController ai = other.GetComponent<AIController>();
+            AIController ai = other.GetComponentInChildren<AIController>();
             if (ai)
             {
                 ai.targetList.Add(source);

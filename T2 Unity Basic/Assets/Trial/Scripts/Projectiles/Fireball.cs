@@ -21,7 +21,15 @@ public class Fireball : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+        
+        //AI, projectiles, editor
+        if (other.gameObject.layer == 13 || other.gameObject.layer == 14 || other.gameObject.layer == 8)
+        {
+            Debug.Log("Passed vision");
+            return;
+        }
+
+        Debug.LogFormat("Bullt hit {0}, tag = {1}.", other.gameObject.name, other.gameObject.tag);
 
         if (other.tag == "Unit")
         {
@@ -34,6 +42,12 @@ public class Fireball : MonoBehaviour {
             {
                 if (source && mc.teamIndex == source.teamIndex)
                     return;
+
+                AIController ai = other.GetComponentInChildren<AIController>();
+                if (ai)
+                {
+                    ai.targetList.Add(source);
+                }
             }
 
 
@@ -42,6 +56,7 @@ public class Fireball : MonoBehaviour {
             NGUI_SplashText.CreateText(transform.position, damage);
         }
 
+        
         
         Destroy(gameObject);
     }

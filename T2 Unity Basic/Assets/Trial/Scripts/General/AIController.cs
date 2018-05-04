@@ -41,7 +41,7 @@ public class AIController : MonoBehaviour {
         if (null == cc)
             cc = GetComponent<CharacterController>();
 
-        GetComponent<AttrController>().Death += StopAI;
+        mc.ac.Death += StopAI;
         
 
         leftHanded = 0 == Random.Range(0, 2);
@@ -120,8 +120,14 @@ public class AIController : MonoBehaviour {
 
     void CheckTarget()
     {
-        while (target != null)
+        while (targetList.Count > 0)
         {
+            if (target == null)
+            {
+                targetList.Remove(target);
+                continue;
+            }
+
             Transform t = target.transform;
             if (Vector3.Distance(t.position, transform.position) > forgiveDistance ||
                 false == target.enabled || target.teamIndex == teamIndex)

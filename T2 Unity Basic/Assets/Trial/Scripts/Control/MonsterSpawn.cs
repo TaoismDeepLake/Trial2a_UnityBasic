@@ -112,12 +112,12 @@ public class MonsterSpawn : MonoBehaviour {
         if ("Unit" == other.tag && other.GetComponent<MotionController>().playerControlled)
         {
             activated = false;
-            foreach(GameObject g in spawnList)
-            {
-                Destroy(g);
-            }
+            //foreach(GameObject g in spawnList)
+            //{
+            //    Destroy(g);
+            //}
 
-            spawnList.Clear();
+            //spawnList.Clear();
         }
     }
 
