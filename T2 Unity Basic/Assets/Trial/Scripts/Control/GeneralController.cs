@@ -8,6 +8,8 @@ public class GeneralController : MonoBehaviour {
 
     public static MotionController playerMC;
 
+    public Transform listScroll;
+
     public GameObject splashTextPrefab;
 
     public bool useEasyTouch = false;

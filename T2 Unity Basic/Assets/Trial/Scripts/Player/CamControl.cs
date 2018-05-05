@@ -93,6 +93,9 @@ public class CamControl : MonoBehaviour {
         if (!pivot )
             return;
 
+        if (Input.GetMouseButton(0))// || Input.GetTouch(0).position)
+            CheckClick();
+
         if (GeneralController.playerMC.playerControlled)
             HandleInput();
 
@@ -165,6 +168,8 @@ public class CamControl : MonoBehaviour {
 
     void HandleInput()
     {
+        
+
         distance += zoomSensi * Time.deltaTime * Input.GetAxis("Mouse ScrollWheel");
         distance = Mathf.Clamp(distance, distMin, distMax);
 
@@ -260,6 +265,28 @@ public class CamControl : MonoBehaviour {
 
             distance -= zoomSensi * zoom;
         }
+
+    }
+
+    public void CheckClick()
+    {
+        RaycastHit hitInfo;
+        Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hitInfo, 50f, 1 << 9 | 1 << 10 | 1<< 11, QueryTriggerInteraction.Ignore);
+
+        if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hitInfo, 50f, 1 << 9 | 1 << 10 | 1 << 11, QueryTriggerInteraction.Ignore))
+        {
+            MotionController mc = hitInfo.collider.GetComponent<MotionController>();
+
+            if (mc && mc.listItem != null)
+            {
+                GeneralController.instance.HaltPlayer();
+
+                Debug.LogFormat("Clicked on {0}", mc.listItem.attrController.unitName);
+                mc.listItem.PlayerAttack();
+            }
+        }
+
+        
 
     }
 

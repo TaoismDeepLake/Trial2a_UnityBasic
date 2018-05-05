@@ -19,7 +19,7 @@ public class PlayerSpawn : MonoBehaviour {
         //camAssist.pivot = GameObject.Find("Pivot").transform;
         //camAssist.player = g.transform;
 
-        cam.pivot = GameObject.Find("Pivot").transform;
+        cam.pivot = g.GetComponentInChildren<PivotMarker>().transform;
         cam.player = g.transform;
         cam.Init();
 
@@ -28,6 +28,7 @@ public class PlayerSpawn : MonoBehaviour {
 
 
         AttrController playerAttr = g.GetComponent<AttrController>();
+        playerAttr.Death += DelayedSpawn;
         playerAttr.bar = playerBar;
         //playerBar.
         return g;
@@ -40,6 +41,8 @@ public class PlayerSpawn : MonoBehaviour {
             cam = FindObjectOfType<CamControl>();
         }
 
+        playerPrefab = AlternateAssets.GetPrefab("Player");
+
         //if (null == camAssist)
         //{
         //    camAssist = FindObjectOfType<CamControlEZ>();
@@ -51,6 +54,17 @@ public class PlayerSpawn : MonoBehaviour {
     void Start () {
         CreatePlayer();
 	}
-	
+
+    void DelayedSpawn()
+    {
+        GeneralController.instance.HaltPlayer();
+        StartCoroutine(DelayedSpawnCoro());
+    }
+
+    IEnumerator DelayedSpawnCoro()
+    {
+        yield return new WaitForSeconds(3f);
+        CreatePlayer();
+    }
 	
 }

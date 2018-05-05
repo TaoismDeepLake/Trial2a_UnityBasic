@@ -6,7 +6,6 @@ public class AttrController : MonoBehaviour {
 
     public event Single Death;
     public event Single OnTakeDamge;
-
     [SerializeField] bool startFull = true;
     [SerializeField] bool destroyOnDeath = false;
     //public UGUI_Bar HPBar = null;
@@ -25,7 +24,10 @@ public class AttrController : MonoBehaviour {
             if (internalAlive)
             {
                 if (HP <= 0)
+                {
                     Death();
+                    internalAlive = false;
+                }
                 //internalAlive = HP > 0;
             }
             return internalAlive;
@@ -116,7 +118,7 @@ public class AttrController : MonoBehaviour {
         isAlive = false;
         //HPBar.gameObject.SetActive(false);
         if (bar)
-            bar.gameObject.SetActive(false);
+            bar.TurnOff();
 
         if (destroyOnDeath)
             Destroy(gameObject);
@@ -131,4 +133,6 @@ public class AttrController : MonoBehaviour {
         if (OnTakeDamge != null)
             OnTakeDamge();
     }
+
+
 }

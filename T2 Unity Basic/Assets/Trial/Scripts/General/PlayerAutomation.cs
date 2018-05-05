@@ -9,6 +9,8 @@ public class PlayerAutomation : MonoBehaviour {
 
     public List<MotionController> targetList = new List<MotionController>();
 
+    public event Single OnStopAI;
+
     public MotionController target
     {
         get
@@ -47,6 +49,9 @@ public class PlayerAutomation : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (mc.hasAnyInput())
+            StopAI();
+
         CheckTarget();
 
         if (target != null)
@@ -102,8 +107,13 @@ public class PlayerAutomation : MonoBehaviour {
 
     public void StopAI()
     {
+        targetList.Clear();
         enabled = false;
         mc.playerControlled = true;
+        if (OnStopAI!= null)
+        {
+            OnStopAI();
+        }
     }
 
     public void OnEnable()

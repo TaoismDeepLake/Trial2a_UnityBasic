@@ -1,0 +1,102 @@
+ManifestFileVersion: 0
+CRC: 3861562740
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 14f21115b6b4da2fa57687671a20ece5
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1ace08ec5312c3f2a633a05e0f41fa8f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: d5ab22217ff5ed448acc3014b670e646, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8d27bea2ae95f214b9afefaae762aa9a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d4db48f2f521a8b4cb13ac4473c4777b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9af764339d71d2442827c2b843ce8840, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e9d0b5f3bbe925a408bd595c79d0bf63, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0b4eb3a400afab046abb8471a9d746d6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 74b565461b695114e81a3f3c1bd374d5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cc725da682d25b348b2d815c326e8b14, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 72068e0ac8568ca4ebd479c52712a252, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: cc19d04a86b170d4fa346c11422a715e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4d0c51bb0b6e93049af5e88f93826e3b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ea629a5c5fb27504a98d24237eea9f7b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 137d46ad7723b3647bc05725e6683d64, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e34fabcef8547d746adc93f07be81f44, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 961ea30fb316f504d92784879ebf4721, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1b3dc54f924693f41b5cbecb267e647a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: ef8e5eaf8dd0fc346a86d9ecaa7b025b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c9b4c5ff105a9a24680dc13a46dfba69, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 119
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 143
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+Assets:
+- Assets/Trial/Prefabs/Character/Player.prefab
+- Assets/Trial/Prefabs/Character/MaleGolem.prefab
+- Assets/Trial/Prefabs/Character/FemaleGolem.prefab
+Dependencies: []

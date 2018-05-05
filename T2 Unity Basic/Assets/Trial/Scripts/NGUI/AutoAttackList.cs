@@ -16,6 +16,13 @@ public class AutoAttackList : MonoBehaviour {
         instance = this;
     }
 
+    public void Refresh()
+    {
+        GeneralController.instance.listScroll.transform.localPosition = new Vector3(-9, 515, 0);
+        GeneralController.instance.listScroll.GetComponent<UIPanel>().clipOffset = new Vector3(0, -400, 0);
+        grid.Reposition();
+    }
+
     public void CreateItem(MotionController mc)
     {
         AutoAttackListItem newItem = Instantiate(itemPrefab, transform).GetComponent<AutoAttackListItem>();
@@ -23,7 +30,7 @@ public class AutoAttackList : MonoBehaviour {
         newItem.transform.SetParent(transform);
         itemList.Add(newItem);
 
-        grid.Reposition();
+        Refresh();
         newItem.OnDestruct += grid.Reposition;
     }
 }

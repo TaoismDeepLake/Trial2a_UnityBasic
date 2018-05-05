@@ -28,6 +28,12 @@ public class NGUI_Bar : MonoBehaviour {
         bar.fillAmount = Mathf.Clamp(ratio, 0f, 1f);
     }
 
+    public void TurnOff()
+    {
+        if (!dontDestroy)
+            Destroy(gameObject);
+    }
+
     // Update is called once per frame
     void Update () {
         if (null == targetTrans)

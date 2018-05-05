@@ -14,6 +14,10 @@ public class MonsterSpawn : MonoBehaviour {
     public float minSpawnTime = 2f, maxSpawnTime = 4f;
 
     public GameObject prefabToSpawn;
+
+    public bool useAssetBundle = false;
+    public string prefabName = "MaleGolem";
+
     public float spawnChance = 0.5f;
     public int maxCount = 10;
 
@@ -36,6 +40,14 @@ public class MonsterSpawn : MonoBehaviour {
     }
 
     public List<GameObject> spawnList = new List<GameObject>();
+
+    private void Start()
+    {
+        if (useAssetBundle)
+        {
+            prefabToSpawn = AlternateAssets.GetPrefab(prefabName);
+        }
+    }
 
     public void Spawn()
     {

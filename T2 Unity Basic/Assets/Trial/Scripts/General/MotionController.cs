@@ -11,6 +11,8 @@ public class MotionController : MonoBehaviour {
     [SerializeField] SoundController sc;
     [SerializeField] VocalController vc;
     public AttrController ac;
+    public AutoAttackListItem listItem;
+
 
     EasyJoystick sz;
     /// <summary>
@@ -121,6 +123,14 @@ public class MotionController : MonoBehaviour {
 
     [SerializeField] float TurnSpeed = 1f;
 
+    public bool hasAnyInput()
+    {
+        return Mathf.Abs(sz.JoystickValue.x) > 0.1f || Mathf.Abs(sz.JoystickValue.y) > 0.1f ||
+            Mathf.Abs(Input.GetAxis("Horizontal")) > 0.1f || Mathf.Abs(Input.GetAxis("Vertical")) > 0.1f;
+    }
+
+    [SerializeField]bool useKeyboard = true;
+
     protected void HandleInput()
     {
         float fire;
@@ -142,6 +152,13 @@ public class MotionController : MonoBehaviour {
 
         moveX = sz.JoystickValue.x / sz.speed.x;
         moveZ = sz.JoystickValue.y;
+
+        if (useKeyboard)
+        {
+            Debug.LogFormat("X={0},Y={1}", Input.GetAxis("Horizontal") * Time.deltaTime, Input.GetAxis("Vertical") * Time.deltaTime);
+            moveX += Input.GetAxis("Horizontal");
+            moveZ += Input.GetAxis("Vertical");
+        }
 
         transform.Rotate(0,TurnSpeed * sz.JoystickValue.x, 0);
         //moveX = Input.GetAxis("Horizontal");
